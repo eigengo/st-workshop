@@ -27,7 +27,7 @@ initialCommands in console := "import language.postfixOps"
 If all worked as expected, you should be able to run ``sbt console``:
 
 ```bash
-~/sandbox/oneup-nov13$ sbt
+~/sandbox/oneup-nov13$ sbt console
 [info] Set current project to oneup-nov13 (in build file:/Users/janmachacek/Eigengo/oneup-nov13/)
 [info] Starting scala interpreter...
 [info]
