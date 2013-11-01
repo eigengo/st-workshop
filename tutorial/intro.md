@@ -71,7 +71,7 @@ Here, we take advantage of Scala's power. We see:
 ---
 
 ##Big fat bonus
-Our ``sum`` function is recursive, but not _tail recursive_. Which means it'll run out of stack at some point. Let's rewrite it to be iterative. We will, though stick to immutability:
+Our ``sum`` function is recursive, but not _tail recursive_. Which means it'll run out of stack at some point. Let's rewrite it to be iterative. We will, though, stick to immutability:
 
 ```scala
 def sum(a: Int, b: Int, inc: Int => Int, comp: Int => Int): Int = {
