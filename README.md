@@ -18,7 +18,7 @@ To give you a starting point for _proper_ Scala project, we will need a build fi
 ~/sandbox/oneup-nov13$ touch build.sbt
 ```
 
-Though we will be using postfix operators, so you may want to make the ``build.sbt`` to be:
+We will be using postfix operators, so you may want to enable them in the ``build.sbt``:
 
 ```scala
 initialCommands in console := "import language.postfixOps"
