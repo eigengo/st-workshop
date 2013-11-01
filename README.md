@@ -6,7 +6,7 @@ Come to the talk ready with your computer running sbt; we recommend using [sbt-e
 
 ```bash
 ~/sandbox/oneup-nov13$ sbt
-/Users/janmachacek doesn't appear to be an sbt project.
+~/sandbox/oneup-nov13 doesn't appear to be an sbt project.
 If you want to start sbt anyway, run:
   /usr/bin/sbt -sbt-create
 ~/sandbox/oneup-nov13$
