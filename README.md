@@ -1,5 +1,5 @@
 #1UP Scala workshop at Manchester university
-Jan Machacek (<janm@cakesolutions.net>, @honzam399) and Nigel Warren (<nigel.warren@underscoreconsulting.com>, ...) will show how you can make the most of Scala's functional, strongly-typed and object-oriented nature to solve problems that would otherwise span over many, many lines of Java code.
+Jan Machacek (<janm@cakesolutions.net>, @honzam399) and Nigel Warren (<nigel.warren@underscoreconsulting.com>, @NigeWarren) will show how you can make the most of Scala's functional, strongly-typed and object-oriented nature to solve problems that would otherwise span over many, many lines of Java code.
 
 ###Setup on proper OSs
 Come to the talk ready with your computer running sbt; we recommend using [sbt-extras](https://github.com/paulp/sbt-extras). Download the shell script and check that you can run ``sbt``.
