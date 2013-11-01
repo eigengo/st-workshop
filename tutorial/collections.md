@@ -27,22 +27,29 @@ WHAA? This is Scala's sugar for ``1.to(1000000)``. Recall that Scala is OO, so `
 l partition (x => x < 40000)
 ```
 
-Let's keep partitioning; and have a long list of ages.
+Let's keep partitioning; to do so nicely, we will need to have a long list of random numbers.
 
 ```scala
 import scala.util.{ Random => rd }
 val r = Array.fill(100000)(rd.nextInt(100))
-val (decrepit, young) = r partition ( x => x > 49 )
+```
+
+Let's imagine that these numbers represent peoples' ages. We can easily partition our population into _optimistic and young_ and _cynical and decrepit_. Obviously, we all fall into the first group, so let's partition accordingly:
+
+```
+val (decrepit, young) = r partition (x => x > 49)
 ```
 
 ---
+
+We can then be asking questions like, "how many different people are there in every age group?"
 
 ```scala
 val ages = decrepit groupBy (x => x)
 val ages = decrepit groupBy identity
 ```
 
-How may in each age group?
+And let's say we don't want to see the numbers (it's obvious that the group with key ``0`` will contain all ``0``s); instead, let's say we're interested in how many values there are in every group.
 
 ```scala
 ages map { case (k, v) => (k, v.size) }
