@@ -71,13 +71,13 @@ Here, we take advantage of Scala's power. We see:
 ---
 
 ##Big fat bonus
-For Scala-whiz-kids, make the function ``sum`` operate on values other than ``Int``. Hint: what is a _monoid_? A structure that defines _zero_ and _append_. One can imagine a monoid numbers as:
+For Scala-whiz-kids, make the function ``sum`` operate on values other than ``Int``. Hint: what is a _monoid_? A structure that defines _zero_ and _append_. One can imagine a monoid for numbers as:
 
 * _zero_ = 0, _append_ = 1 + for type ``Int``,
 * _zero_ = 0.0, _append_ = 1.0 + for type ``Double``,
 * and so on
 
-In Scala, we have type ``Numeric[A]``, which is a monoid for the type ``A``; and we can ask the compiler to supply the instance for the type ``A``, if it exists.
+In Scala, we have type ``Numeric[A]``, which is a monoid for type ``A``; and we can ask the compiler to supply the instance for the type ``A``, if it exists.
 
 ```scala
 def sum[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit ev: Numeric[A]): A = 
