@@ -77,7 +77,7 @@ For Scala-whiz-kids, make the function ``sum`` operate on values other than ``In
 * _zero_ = ``0.0``, _append_ = ``1.0 +`` for type ``Double``,
 * and so on
 
-In Scala, we have type ``Numeric[A]``, which is a monoid for type ``A``; and we can ask the compiler to supply the instance for the type ``A``, if it exists.
+In Scala, we have type ``Numeric[A]``, which is a monoid for type ``A``; and we can ask the compiler to supply an instance for  type ``A``, if it exists.
 
 ```scala
 def sum[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit ev: Numeric[A]): A = 
