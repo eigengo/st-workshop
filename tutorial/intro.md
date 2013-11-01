@@ -65,9 +65,7 @@ Here, we take advantage of Scala's power. We see:
 
 * Function literals: ``x => x + 1``,
 * Local type inference: we don't need to write ``x: Int => x + 1``,
-* Automatic lifting of method to functions. ``def identity[A](a: A): A = a`` is lifted to be ``a: A => a``; and the type ``A`` is inferred to be ``Int`` ,
+* Automatic lifting of method to functions. ``def identity[A](a: A): A = a`` is lifted to be ``a: A => a``; and the type ``A`` is inferred to be ``Int``,
 * Object-functional nature: ``(1).+`` is the function called ``+`` in instance of type ``Int``, namely ``1``. It takes one more parameter of type ``Int`` and returns ``Int``. It can be lifted to match the parameter type ``Int => Int``.
 
-
-
- We see function literals (``x => x + 1``), we 
+Done
