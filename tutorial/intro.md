@@ -37,3 +37,37 @@ This converges to
 def piSum(a: Int, b: Int): Double = if (a > b) 0 else (1.0 / (a * a + a * 2)) + piSum(a + 4, b)
 ```
 
+---
+
+Let's extract the pattern, which is _sum_. We are summing from lower bound to some upper bound, computing next value of the index, and performing some computation in every step:
+
+```scala
+def sum(a, b, inc, comp) = if (a > b) 0 else comp(a) + sum(inc(a), b, inc, comp)
+```
+
+Let's define the types properly:
+
+```scala
+def sum(a: Int, b: Int, inc: Int => Int, comp: Int => Int): Int =
+  if (a > b) 0 else comp(a) + sum(inc(a), b, inc, comp)
+```
+
+And then use:
+
+```scala
+sum(0, 5, x => x + 1, x => x)
+sum(0, 5, x => x + 1, identity)
+sum(0, 5, (1).+, identity)
+sum(0, 5, 1 +, identity)
+```
+
+Here, we take advantage of Scala's power. We see:
+
+* Function literals: ``x => x + 1``,
+* Local type inference: we don't need to write ``x: Int => x + 1``,
+* Automatic lifting of method to functions. ``def identity[A](a: A): A = a`` is lifted to be ``a: A => a``; and the type ``A`` is inferred to be ``Int``,
+* Object-functional nature: ``(1).+`` is the function called ``+`` in instance of type ``Int``, namely ``1``. It takes one more parameter of type ``Int`` and returns ``Int``. It can be lifted to match the parameter type ``Int => Int``.
+
+
+
+ We see function literals (``x => x + 1``), we 
