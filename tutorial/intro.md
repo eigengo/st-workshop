@@ -71,6 +71,15 @@ Here, we take advantage of Scala's power. We see:
 ---
 
 ##Big fat bonus
+Our ``sum`` function is recursive, but not _tail recursive_. Which means it'll run out of stack at some point. Let's rewrite it to be iterative. We will, though stick to immutability:
+
+```scala
+def sum(a: Int, b: Int, inc: Int => Int, comp: Int => Int): Int = {
+  def iter(i: Int, r: Int): Int = if (i > b) r else iter(inc(i), r + comp(i))
+  iter(a, 0)
+}
+```
+
 For Scala-whiz-kids, make the function ``sum`` operate on values other than ``Int``. Hint: what is a _monoid_? A structure that defines _zero_ and _append_. One can imagine a monoid for numbers as:
 
 * _zero_ = ``0``, _append_ = ``1 +`` for type ``Int``,
@@ -82,6 +91,15 @@ In Scala, we have type ``Numeric[A]``, which is a monoid for type ``A``; and we 
 ```scala
 def sum[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit ev: Numeric[A]): A = 
   if (a > b) ev.zero else ev.plus(comp(a), sum(inc(a), b, inc, comp))
+```
+
+Or, iteratively:
+
+```scala
+def sum[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit ev: Numeric[A]): A = {
+  def iter(i: Int, r: A): A = if (i > b) r else iter(inc(i), ev.plus(r, comp(i)))
+  iter(a, ev.zero)
+}
 ```
 
 We can then deal with our favourite ``piSum`` function as
