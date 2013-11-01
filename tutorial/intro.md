@@ -27,4 +27,4 @@ def sumSquares(a: Int, b: Int): Int = if (a > b) 0 else (a * a) + sumSquares(a +
 
 These two functions only differ by the operation (``a`` or ``a * a``), otherwise they are the same thing. And so, we'd like to extract this same thing. That's just good engineering. Let's compute pi using Leibnitz's pi-sum.
 
-![Sum(a by 4, b)(1/(i*(i+2))](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%5C%2520by%5C%25204%7D%7D%5Eb%2520%5Cfrac%7B1%7D%7Bi(i%2B2)%7D)
+![Sum(a by 4, b)(1/(i*(i+2))](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%5C%20by%5C%204%7D%7D%5Eb%20%5Cfrac%7B1%7D%7Bi(i%2B2)%7D)
