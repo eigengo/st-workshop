@@ -2,7 +2,7 @@
 
 Scala is an object-functional, strongly-typed language. Let's see how it all fits together. We begin by exploring its cool side by writing a function that sums all numbers from _a_ to some _b_.
 
-![Sum(a, b)(i)](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%7D%5Eb%2520i)
+![Sum(a, b)(i)](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%7D%5Eb%20i)
 
 Of course, _without_ mutation, and _with_ recursion.
 
@@ -15,7 +15,7 @@ def sumInts(a: Int, b: Int): Int = if (a > b) 0 else a + sumInts(a + 1, b)
 
 Let's modify this a bit and do a sum-of-squares.
 
-![Sum(a, b)(i ^ 2)](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%7D%5Eb%2520i%5E2)
+![Sum(a, b)(i ^ 2)](http://latex.codecogs.com/gif.latex?%5Csum_%7Bi%3Da%7D%5Eb%20i%5E2)
 
 It's essentially the same thing:
 
