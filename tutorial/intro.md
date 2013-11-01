@@ -65,7 +65,27 @@ Here, we take advantage of Scala's power. We see:
 
 * Function literals: ``x => x + 1``,
 * Local type inference: we don't need to write ``x: Int => x + 1``,
-* Automatic lifting of method to functions. ``def identity[A](a: A): A = a`` is lifted to be ``a: A => a``; and the type ``A`` is inferred to be ``Int``,
+* Automatic lifting of method to functions: ``def identity[A](a: A): A = a`` is lifted to be ``a: A => a``; and the type ``A`` is inferred to be ``Int``,
 * Object-functional nature: ``(1).+`` is the function called ``+`` in instance of type ``Int``, namely ``1``. It takes one more parameter of type ``Int`` and returns ``Int``. It can be lifted to match the parameter type ``Int => Int``.
 
-Done
+---
+
+##Big fat bonus
+For Scala-whiz-kids, make the function ``sum`` operate on values other than ``Int``. Hint: what is a _monoid_? A structure that defines _zero_ and _append_. One can imagine a monoid numbers as:
+
+* _zero_ = 0, _append_ = 1 + for type ``Int``,
+* _zero_ = 0.0, _append_ = 1.0 + for type ``Double``,
+* and so on
+
+In Scala, we have type ``Numeric[A]``, which is a monoid for the type ``A``; and we can ask the compiler to supply the instance for the type ``A``, if it exists.
+
+```scala
+def sum[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit ev: Numeric[A]): A = 
+  if (a > b) ev.zero else ev.plus(comp(a), sum(inc(a), b, inc, comp))
+```
+
+We can then deal with our favourite ``piSum`` function as
+
+```scala
+def piSum(a: Int, b: Int): Double = sum(a, b, 4 +, (x => 1.0 / (x * x + x * 2))) * 8.0
+```
