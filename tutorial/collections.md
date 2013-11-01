@@ -21,7 +21,7 @@ To progress further, we need slightly more numbers. We can use Scala's ranges.
 val l = 1 to 1000000
 ```
 
-WHAA? This is Scala's sugar for ``1.to(1000000)``. Recall that Scala is OO, so ``1`` is an instance of ``Int``; and we can call methods on it. 
+WHAA? This is Scala's sugar for ``1.to(1000000)``. Recall that Scala is OO, so ``1`` is an instance of ``Int``; and we can call methods on it. (Actually, this case is ever-so-slightly more hairy, but let's not worry about that now.)
 
 ```scala
 l partition (x => x < 40000)
