@@ -64,7 +64,7 @@ Let's close with Fibbonaci's numbers. How would you do it normally? We are going
 val fibs: Stream[BigInt] = 0 #:: fibs.scanLeft(BigInt(1))(_ + _)
 ```
 
-And then ask Scala to evaluate the first 5:
+And then ask Scala to evaluate the first 10:
 
 ```scala
 fibs.take(10).toList
