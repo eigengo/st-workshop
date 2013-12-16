@@ -193,15 +193,16 @@ has an instance of ``Monoid[Int]``. Unfortunately, this is where Haskell's typec
 first-class citizens really shine; Scala's approach is not as efficient or elegant.
 
 This is not pleasant. That's why in Scala, we often break our typeclass instances into two portions:
-a trait that actually defines the functionality and then an implicit object that mixes in the traits.
+a trait that defines the functionality, another trait that implements it, and then an implicit 
+object that mixes in the implementation trait.
 
 ```scala
 trait Monoid[A] { /* definitions */ }
-trait IntMonoidAux extends Monoid[Int] { /* implemented */ }
+trait IntMonoidAux extends Monoid[Int] { /* definitions implemented */ }
 implicit object IntMonoid extends IntMonoidAux
 
 trait Group[A] extends Monoid[A] { /* definitions */ }
-trait IntGroupAux extends Group[Int] with IntMonoidAux { /* implemented */ }
+trait IntGroupAux extends Group[Int] with IntMonoidAux { /* definitions implemented */ }
 implicit object IntGroup extends IntGroupAux
 ```
 
