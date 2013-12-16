@@ -79,11 +79,13 @@ If this ``object IntMonoid`` is in the current scope, the Scala compiler will be
 the value of the ``implicit m: Monoid[A]`` parameter; and our function compiles & runs as expected.
 
 ##Haskell again
+
 Compare the code in Haskell:
 
 ```haskell
 sigma :: (Monoid a) => Int -> Int -> (Int -> Int) -> (Int -> a) -> a
-sigma a b inc comp = ...
+sigma a b inc comp = 
+  if a > b then mempty else mappend ...
 ```
 
 And the Scala code
