@@ -1,5 +1,5 @@
 #Typeclasses
-
+i
 Typeclass is a concept in Scala and Haskell (and in some other strongly-typed languages). The best way
 to think about a typeclass is that it is an interface, which defines functions. So, having a typeclass
 
@@ -156,6 +156,7 @@ And we can now happily require these instances:
 ```haskell
 example :: (Group a) => a -> a
 example a = inverse (mappend a a)
+
 ```
 
 ---
@@ -192,6 +193,7 @@ implicit def intGroup(implicit m: Monoid[Int]): Group[Int] = new Group[Int] {
 Here you can see that the compiler will create an instance of ``Group[Int]``, as long as it already
 has an instance of ``Monoid[Int]``. Unfortunately, this is where Haskell's typeclasses are indeed
 first-class citizens really shine; Scala's approach is not as efficient or elegant.
+
 
 #What are these typeclasses?
 A good way of thinking about the typeclasses is that they represent "strategies" based on types.
