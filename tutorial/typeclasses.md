@@ -1,5 +1,4 @@
 #Typeclasses
-i
 Typeclass is a concept in Scala and Haskell (and in some other strongly-typed languages). The best way
 to think about a typeclass is that it is an interface, which defines functions. So, having a typeclass
 
@@ -79,7 +78,6 @@ If this ``object IntMonoid`` is in the current scope, the Scala compiler will be
 the value of the ``implicit m: Monoid[A]`` parameter; and our function compiles & runs as expected.
 
 ##Haskell again
-
 Compare the code in Haskell:
 
 ```haskell
@@ -184,8 +182,8 @@ Or (inefficiently!) we can write code that's similar to the Haskell code:
 
 ```scala
 implicit def intGroup(implicit m: Monoid[Int]): Group[Int] = new Group[Int] {
-  def mempty = m.empty
-  def mappend = m.append
+  def mempty = m.mempty
+  def mappend = m.mappend
   def invserse(a: Int) = -a
 }
 ```
