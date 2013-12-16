@@ -192,6 +192,18 @@ Here you can see that the compiler will create an instance of ``Group[Int]``, as
 has an instance of ``Monoid[Int]``. Unfortunately, this is where Haskell's typeclasses are indeed
 first-class citizens really shine; Scala's approach is not as efficient or elegant.
 
+This is not pleasant. That's why in Scala, we often break our typeclass instances into two portions:
+a trait that actually defines the functionality and then an implicit object that mixes in the traits.
+
+```scala
+trait Monoid[A] { /* definitions */ }
+trait IntMonoidAux extends Monoid[Int] { /* implemented */ }
+implicit object IntMonoid extends IntMonoidAux
+
+trait Group[A] extends Monoid[A] { /* definitions */ }
+trait IntGroupAux extends Group[Int] with IntMonoidAux { /* implemented */ }
+implicit object IntGroup extends IntGroupAux
+```
 
 #What are these typeclasses?
 A good way of thinking about the typeclasses is that they represent "strategies" based on types.
