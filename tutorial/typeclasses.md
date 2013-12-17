@@ -22,7 +22,7 @@ contain no behaviour. Let's now find out how to define instances of typeclasses;
 an implementation of the interface (say, the ``Monoid`` above) for a specific type. Consider:
 
 ```haskell
-instance Monid Int where
+instance Monoid Int where
   mempty = 0
   mappend a b = a + b
 ```
@@ -114,7 +114,7 @@ implicit object IntMonoid extends Monoid[Int] { ... }
 implicit val intMonoid = new Monoid[Int] { ... }
 
 // implicit function that returns a new Monoid[Int] every time
-implicit def intMonoid = new Monid[Int] { ... }
+implicit def intMonoid = new Monoid[Int] { ... }
 
 // implicit named implementation
 class IntMonoid extends Monoid[Int] { ... }
