@@ -34,7 +34,7 @@ import scala.util.Random
 // val r = List.fill(100000)(Random.nextInt(100))
 ```
 
-Let's imagine that these numbers represent peoples' ages. You know, let's not imagine, but define the ``Person`` types instead.
+Let's imagine that these numbers represent peoples' ages. You know, let's not imagine, but define the ``Person`` type instead.
 
 ```scala
 case class Person(firstName: String, lastName: String, age: Int)
