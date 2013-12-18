@@ -80,4 +80,4 @@ class Monad a where
   (>>=) :: forall a b. m a -> (a -> m b) -> m b
 ```
 
-To "see" the average, we "unwrap" the result of ``people >>= return . average``, whose type is ``IO [Person] -> (Person -> IO Int) -> IO Int``. Nota bene that ``people >>= return . average`` only returns ``IO Int``, it does not actually compute anything. To kick-off the computation, we must unwrap the value in the ``IO`` container, for example by requesting it to be displayed.
+To "see" the average, we "unwrap" the result of ``people >>= return . average``, whose type is ``IO Int``. Nota bene that ``people >>= return . average`` only returns ``IO Int``, it does not actually compute anything. To kick-off the computation, we must unwrap the value in the ``IO`` container, for example by requesting it to be displayed.
