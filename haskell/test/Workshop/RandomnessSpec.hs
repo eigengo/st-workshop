@@ -4,7 +4,7 @@ module Workshop.RandomnessSpec(spec) where
 
   spec :: Spec
   spec = do
-    -- Big data my ar*e
+    -- Not really big 
     describe "'Big data' support" $ do
       -- sum of all age fields in the list
       it "computes total age" $ do
