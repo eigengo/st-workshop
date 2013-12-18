@@ -55,8 +55,11 @@ ages is simply:
 The average age is 
 
 ```haskell
+  total :: [Person] -> Int
+  total = foldl (flip $ (+) . age) 0
+
   average :: [Person] -> Int
-  average people = (foldl (flip $ (+) . age) 0 people) `div` (length people)
+  average people = (total people) `div` (length people)
 ```
 
 Unfortunately, I cannot write ``average people``, because ``people`` return ``IO [Person]``, 
