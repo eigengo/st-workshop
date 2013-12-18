@@ -1,11 +1,7 @@
 #Randomness
-In the collections, we used Scala to create collections containing some _random_ values! The problem with
-random values is that they are not pure; a function that returns random anything cannot be pure, because
-its result depends on something other than its arguments.
+In the collections, we used Scala to create collections containing some _random_ values! The problem with random values is that they are not pure; a function that returns random anything cannot be pure, because its result depends on something other than its arguments.
 
-And that is a big boo-boo for pure FP, like Haskell. However, to be useful, even pure FP languages need 
-to be able to deal with side-effects. Luckily, we have monads to help us with that; and in particular,
-the IO monad.
+And that is a big boo-boo for pure FP, like Haskell. However, to be useful, even pure FP languages need to be able to deal with side-effects. Luckily, we have monads to help us with that; and in particular, the IO monad.
 
 So let's create a person record, and then a way to generate said person.
 
@@ -43,8 +39,7 @@ a number of random persons.
     replicateM 100 (person gen)
 ```
 
-We can now write functions that are similar to the Scala ones. For example, to partition the people by
-ages is simply:
+We can now write functions that are similar to the Scala ones. For example, to partition the people by ages is simply:
 
 
 ```haskell
@@ -52,7 +47,19 @@ ages is simply:
   ages = partition ((> 50) . age)
 ```
 
-The average age is 
+Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which means _g_ applied to whatever _f_ returns. The type of ``(> 50)`` is ``Int -> Bool``; the ``Int`` here means the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
+
+```scala
+def age(p: Person): Int = ...
+def gt(x: Int)(value: Int) = x > value
+def over50(p: Person) = gt(50)(age(p))
+```
+
+This is a bit clunky, and so we don't usually compose functions like this in Scala. However, in Haskell, the situation is completely different; composition ahoy!
+
+---
+
+Onwards, let's implement some of the remaining functions we had in Scala. The average age is 
 
 ```haskell
   total :: [Person] -> Int
