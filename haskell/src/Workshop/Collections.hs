@@ -23,10 +23,13 @@ module Workshop.Collections where
   people :: IO [Person]
   people = do
     gen <- getStdGen
-    replicateM 100 (person gen)
+    replicateM 20000 (person gen)
 
   ages :: [Person] -> ([Person], [Person])
   ages = partition ((> 50) . age)
 
+  total :: [Person] -> Int
+  total = foldl (flip $ (+) . age) 0
+
   average :: [Person] -> Int
-  average people = (foldl (flip $ (+) . age) 0 people) `div` (length people)
+  average people = (total people) `div` (length people)
