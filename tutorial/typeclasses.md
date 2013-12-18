@@ -49,7 +49,7 @@ Before I dig into the details, let me show equivalent code in Scala:
 
 ```scala
 def sigma[A](a: Int, b: Int, inc: Int => Int, comp: Int => a)(implicit m: Monoid[A]): A =
-  if (a > b) m.mempty else m.append(comp(a), sigma(inc(a), b, inc, comp))
+  if (a > b) m.mempty else m.mappend(comp(a), sigma(inc(a), b, inc, comp))
 ```
 
 So, in Scala, we have to be a bit more explicit; we need to tell the compiler which monoid instance 
@@ -91,10 +91,10 @@ And the Scala code
 ```scala
 // option 1: explicit implicits
 def sigma[A](a: Int, b: Int, inc: Int => Int, comp: Int => A)(implicit m: Monoid[A]): A =
-  if (a > b) m.mempty else m.append(...)
+  if (a > b) m.mempty else m.mappend(...)
 // option 2: type bounds
 def sigma[A : Monoid](a: Int, b: Int, inc: Int => Int, comp: Int => A): A =
-  if (a > b) implicitly[Monoid[A]].mempty else implicitly[Monoid[A]].append(...)
+  if (a > b) implicitly[Monoid[A]].mempty else implicitly[Monoid[A]].mappend(...)
 // consume implicit
 def sigma[A : Monoid](a: Int, b: Int, inc: Int => Int, comp: Int => A): A = {
   val m = implicitly[Monoid[A]]
