@@ -47,14 +47,12 @@ We can now write functions that are similar to the Scala ones. For example, to p
   ages = partition ((> 50) . age)
 ```
 
-Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which you can read as _f_ and then _g_; in other words, a function that takes whatever _f_ takes and returns whatever _g_ applied to whatever _f_ returns. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here means the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
+Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here means the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
 
 ```scala
 def age(p: Person): Int = ...
-def gt(x: Int)(value: Int) = x > value
-def over50(p: Person) = (gt(50) andThen age)(p)
-//
-val over50p = (gt(50) andThen age)
+def over50(p: Person) = (age _ andThen (50 >))(p)
+val over50p = age _ andThen (50 >)
 ```
 
 This is a bit clunky, and so we don't usually compose functions like this in Scala. However, in Haskell, the situation is completely different; composition ahoy!
