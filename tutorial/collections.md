@@ -42,7 +42,7 @@ case class Person(firstName: String, lastName: String, age: Int)
 
 And instead of generating the random numbers, we'll generate random people.
 
-```
+```scala
 val people = List.fill(100000) {
   def randomName = Random.alphanumeric.take(Random.nextInt(10)).mkString
   def randomAge  = Random.nextInt(100)
@@ -66,7 +66,7 @@ Next, what's the average age?
 
 Now, we can easily partition our population into _optimistic and young_ and _cynical and decrepit_. Obviously, we all fall into the first group, so let's partition accordingly:
 
-```
+```scala
 val (decrepit, young) = people partition (x => x.age > 49)
 val (decrepit, young) = people partition (_.age > 49)
 ```
