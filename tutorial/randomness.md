@@ -50,7 +50,7 @@ module Workshop.Collections where
       randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
 ```
 
-Just what is ``return . (`mod` max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs in the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
+Just what is ``return . (`mod` max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
 
 ```haskell
 return :: a -> m a
