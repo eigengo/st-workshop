@@ -12,7 +12,7 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
   person gen = do
     firstName <- randomString
     lastName  <- randomString
-    age       <- randomInt 100
+    age       <- randomInt 101
     return $ Person firstName lastName age 
     where
       randomString = do
