@@ -3,7 +3,28 @@ In the collections, we used Scala to create collections containing some _random_
 
 And that is a big boo-boo for pure FP, like Haskell. However, to be useful, even pure FP languages need to be able to deal with side-effects. Luckily, we have monads to help us with that; and in particular, the IO monad.
 
-So let's create a person record, and then a way to generate said person.
+Just before I continue, I must point out that when I say "the _x_ monad", I mean that there is an instance of the ``Monad`` typeclass for the given type _x_. IO is a data structure with a function that performs some operation on the world and returns a new world and the result of the opreation. In Haskell-speak, it is:
+
+```haskell
+data IO a = IO (Realworld -> (Realworld, a))
+```
+
+As you can see, this is just a data type; so when I say the IO monad, I mean that there is 
+
+```haskell
+class Monad a where
+  return :: a -> m a
+  (>>=)  :: forall a b. m a -> (a -> m b) -> m b
+```
+
+```haskell
+instance Monad IO where
+  return    = returnIO
+  (>>=)     = bindIO
+  ...
+```
+
+With that in mind, let's create a person record, and then a way to generate said person.
 
 ```haskell
 module Workshop.Collections where
@@ -20,7 +41,7 @@ module Workshop.Collections where
   person gen = do
     firstName <- randomString
     lastName  <- randomString
-    age       <- randomInt 100
+    age       <- randomInt 101
     return $ Person firstName lastName age 
     where
       randomString = do
@@ -29,8 +50,16 @@ module Workshop.Collections where
       randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
 ```
 
-Once we are able to generate one random person, we can surely _replicate_ the generating process over 
-a number of random persons.
+Just what is ``return . (`mod` max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs in the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
+
+```haskell
+return :: a -> m a
+(>>=)  :: forall a b. m a -> (a -> m b) -> m b
+```
+
+We are supplying the first parameter (``IO Int``) in the application of ``>>=``, we just need the second one; of type ``Int -> IO Int``. The modulo function (``mod``) takes two numbers, ``(Num a) => a -> a -> a``. Remember from mathematics, function composition ``g . f``, and so we can compose ``mod`` with ``return`` to give us indeed a function from ``Int -> IO Int``, and therefore, we have ``return . (`mod` max)``.
+
+Once we are able to generate one random person, we can surely _replicate_ the generating process over a number of random persons.
 
 ```haskell
   people :: IO [Person]
@@ -71,11 +100,5 @@ Onwards, let's implement some of the remaining functions we had in Scala. The av
 
 Unfortunately, I cannot write ``average people``, because ``people`` returns ``IO [Person]``, 
 not ``[Person]``. I need to use the _bind_ operation.
-
-```haskell
-class Monad a where
-  ...
-  (>>=) :: forall a b. m a -> (a -> m b) -> m b
-```
 
 To "see" the average, we "unwrap" the result of ``people >>= return . average``, whose type is ``IO Int``. Nota bene that ``people >>= return . average`` only returns ``IO Int``, it does not actually compute anything. To kick-off the computation, we must unwrap the value in the ``IO`` container, for example by requesting it to be displayed.
