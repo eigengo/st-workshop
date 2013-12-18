@@ -30,14 +30,45 @@ l partition (x => x < 40000)
 Let's keep partitioning; to do so nicely, we will need to have a long list of random numbers.
 
 ```scala
-import scala.util.{ Random => rd }
-val r = Array.fill(100000)(rd.nextInt(100))
+import scala.util.Random
+// val r = List.fill(100000)(Random.nextInt(100))
 ```
 
-Let's imagine that these numbers represent peoples' ages. We can easily partition our population into _optimistic and young_ and _cynical and decrepit_. Obviously, we all fall into the first group, so let's partition accordingly:
+Let's imagine that these numbers represent peoples' ages. You know, let's not imagine, but define the ``Person`` types instead.
+
+```scala
+case class Person(firstName: String, lastName: String, age: Int)
+```
+
+And instead of generating the random numbers, we'll generate random people.
 
 ```
-val (decrepit, young) = r partition (x => x > 49)
+val people = List.fill(100000) {
+  def randomName = Random.alphanumeric.take(Random.nextInt(10)).mkString
+  def randomAge  = Random.nextInt(100)
+  Person("F" + randomName, "L" + randomName, randomAge)
+}
+```
+
+First question. What's the sum of all the ages?
+
+```scala
+people.foldLeft(0) { (sum, p) => sum + p.age }
+```
+
+Or, perhaps more succinctly
+
+```scala
+people.foldLeft(0)(_ + _.age)
+```
+
+Next, what's the average age?
+
+Now, we can easily partition our population into _optimistic and young_ and _cynical and decrepit_. Obviously, we all fall into the first group, so let's partition accordingly:
+
+```
+val (decrepit, young) = people partition (x => x.age > 49)
+val (decrepit, young) = people partition (_.age > 49)
 ```
 
 ---
@@ -45,15 +76,16 @@ val (decrepit, young) = r partition (x => x > 49)
 We can then be asking questions like, "how many different people are there in every age group?"
 
 ```scala
-val ages = decrepit groupBy (x => x)
-val ages = decrepit groupBy identity
+val ages = decrepit groupBy (x => x.age)
+val ages = decrepit groupBy (_.age)
 ```
 
-And let's say we don't want to see the numbers (it's obvious that the group with key ``0`` will contain all ``0``s); instead, let's say we're interested in how many values there are in every group.
+And let's say we don't want to see the people (it's obvious that the group with key ``0`` will contain the ``Person`` instances with ``age == 0``); instead, let's say we're interested in how many values there are in every group.
 
 ```scala
 ages map { case (k, v) => (k, v.size) }
 ages mapValues (v => v.size)
+ages mapValues (_.size)
 ```
 
 ---

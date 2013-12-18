@@ -1,0 +1,32 @@
+module Workshop.Collections where
+
+  import Data.List
+  import System.Random
+  import Control.Monad
+
+  data Person = Person { firstName :: String
+                       , lastName :: String
+                       , age :: Int } deriving (Show)
+
+  person :: (RandomGen g) => g -> IO Person
+  person gen = do
+    firstName <- randomString
+    lastName  <- randomString
+    age       <- randomInt 100
+    return $ Person firstName lastName age 
+    where
+      randomString = do
+        len <- randomInt 10
+        return $ take len (randomRs ('a', 'z') gen)
+      randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
+
+  people :: IO [Person]
+  people = do
+    gen <- getStdGen
+    replicateM 100 (person gen)
+
+  ages :: [Person] -> ([Person], [Person])
+  ages = partition ((> 50) . age)
+
+  average :: [Person] -> Int
+  average people = (foldl (flip $ (+) . age) 0 people) `div` (length people)

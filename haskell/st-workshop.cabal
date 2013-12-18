@@ -1,0 +1,29 @@
+name:                st-workshop
+version:             0.1.0.0
+synopsis:            Strongly-typed workshop examples
+license:             Apache-2.0
+license-file:        LICENSE
+author:              Jan Machacek
+maintainer:          jan.machacek@gmail.com
+category:            Network
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Workshop.Collections
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  build-depends:       
+      base >= 4.6
+    , mtl >= 2.1.2
+
+test-suite spec
+  type:                exitcode-stdio-1.0
+  ghc-options:         -Wall -Werror
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  default-language:    Haskell2010
+  build-depends:
+      st-workshop
+    , base    >= 4.6 
+    , hspec   >= 1.3
