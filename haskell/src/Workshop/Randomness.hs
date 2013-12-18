@@ -1,4 +1,4 @@
-module Workshop.Collections where
+module Workshop.Randomness(Person(..), people, ages, total, average) where
 
   import Data.List
   import System.Random
