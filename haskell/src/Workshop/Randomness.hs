@@ -18,7 +18,7 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
       randomString = do
         len <- randomInt 10
         return $ take len (randomRs ('a', 'z') gen)
-      randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
+      randomInt max = (randomIO :: IO Int) >>= return . (mod max)
 
   people :: IO [Person]
   people = do

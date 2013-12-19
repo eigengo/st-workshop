@@ -47,10 +47,10 @@ module Workshop.Collections where
       randomString = do
         len <- randomInt 10
         return $ take len (randomRs ('a', 'z') gen)
-      randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
+      randomInt max = (randomIO :: IO Int) >>= return . (mod max)
 ```
 
-Just what is ``return . (`mod` max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
+Just what is ``return . (mod max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
 
 ```haskell
 return :: a -> m a
@@ -76,7 +76,7 @@ We can now write functions that are similar to the Scala ones. For example, to p
   ages = partition ((> 50) . age)
 ```
 
-Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here means the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
+Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here should represent the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
 
 ```scala
 def age(p: Person): Int = ...
@@ -84,7 +84,28 @@ def over50(p: Person) = (age _ andThen (50 >))(p)
 val over50p = age _ andThen (50 >)
 ```
 
-This is a bit clunky, and so we don't usually compose functions like this in Scala. However, in Haskell, the situation is completely different; composition ahoy!
+This is a bit clunky, and so we don't usually compose functions like this in Scala. Moreover, Scala is OO, so there is a method ``age`` on the ``Person`` type; similarly, Scala's ``List[A]`` contains the ``partition`` method takes the ``A => Boolean`` parameter. And so, we only write
+
+```scala
+val ps: List[Person] = ...
+ps partition (_.age > 50)
+```
+
+However, in Haskell, the situation is completely different, and we make the most of the composition. Haskell code typically tries to be point-free, which roughly means that it tries to eliminate unnecessary values from both sides of Haskell equations.
+
+
+```haskell
+personOfAge :: Int -> Person
+personOfAge age = Person "first" "last" age
+```
+
+The ``personOfAge`` here is pointwise, but we can eliminate the ``age`` element from both sides of the equation, giving us the point-free version:
+
+
+```haskell
+personOfAge :: Int -> Person
+personOfAge = Person "first" "last"
+```
 
 ---
 
