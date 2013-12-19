@@ -1,5 +1,5 @@
 #Randomness
-In the collections, we used Scala to create collections containing some _random_ values! The problem with random values is that they are not pure; a function that returns random anything cannot be pure, because its result depends on something other than its arguments.
+In the collections module, we used Scala to create collections containing some _random_ values! The problem with random values is that they are not pure; a function that returns random anything cannot be pure, because its result depends on something other than its arguments.
 
 And that is a big boo-boo for pure FP, like Haskell. However, to be useful, even pure FP languages need to be able to deal with side-effects. Luckily, we have monads to help us with that; and in particular, the IO monad.
 
