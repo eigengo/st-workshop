@@ -50,14 +50,16 @@ module Workshop.Collections where
       randomInt max = (randomIO :: IO Int) >>= return . (mod max)
 ```
 
-Just what is ``return . (mod max)``? First of all, ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the value. The bind ``>>=`` function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit:
+Just what is ``return . (mod max)``? It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. Let's get back to decyphering the code. ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the given value. The bind (``>>=``) function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit, particularly for a special case where ``a == b``.
 
 ```haskell
-return :: a -> m a
+return ::                     a -> m a
 (>>=)  :: forall a b. m a -> (a -> m b) -> m b
 ```
 
-We are supplying the first parameter (``IO Int``) in the application of ``>>=``, we just need the second one; of type ``Int -> IO Int``. The modulo function (``mod``) takes two numbers, ``(Num a) => a -> a -> a``. Remember from mathematics, function composition ``g . f``, and so we can compose ``mod`` with ``return`` to give us indeed a function from ``Int -> IO Int``, and therefore, we have ``return . (`mod` max)``.
+We are supplying the first parameter (``IO Int``) in the application of ``>>=``, we just need the second one; of type ``Int -> IO Int``. The modulo function (``mod``) takes two numbers, ``(Num a) => a -> a -> a``. We can have ``return`` _following_ ``mod c`` to give us indeed a function from ``Int -> IO Int``. Therefore, in our code we have ``return . (mod max)``.
+
+--- 
 
 Once we are able to generate one random person, we can surely _replicate_ the generating process over a number of random persons.
 
@@ -76,7 +78,7 @@ We can now write functions that are similar to the Scala ones. For example, to p
   ages = partition ((> 50) . age)
 ```
 
-Notice the function composition ``.`` in the equation ``(> 50) . age``. It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here should represent the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
+Notice again the function composition ``.`` in the equation ``(> 50) . age``. The type of ``(> 50)`` is (nearly) ``Int -> Bool``; the ``Int`` here should represent the person's age. We want to say take ``age``, and apply whatever that returns to ``(> 50)``. In Scala syntax, this would be
 
 ```scala
 def age(p: Person): Int = ...
