@@ -47,17 +47,17 @@ module Workshop.Collections where
       randomString = do
         len <- randomInt 10
         return $ take len (randomRs ('a', 'z') gen)
-      randomInt max = (randomIO :: IO Int) >>= return . (mod max)
+      randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
 ```
 
-Just what is ``return . (mod max)``? It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. Let's get back to decyphering the code. ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the given value. The bind (``>>=``) function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit, particularly for a special case where ``a == b``.
+Just what is ``return . (`mod` max)``? It is the familiar ``f . g``, which you can read as _f_ following _g_; in other words, a function that takes what _g_ takes and returns what _f_ applied to what _g_ returns. Let's get back to decyphering the code. ``return`` is the function from the ``Monad`` typeclass, it takes some value that it packs into the monad (``IO`` here) and returns the ``IO`` with the given value. The bind (``>>=``) function binds ``m a`` over function ``a -> m b``, and returns ``m b``. This feels like it could fit, particularly for a special case where ``a == b``.
 
 ```haskell
 return ::                     a -> m a
 (>>=)  :: forall a b. m a -> (a -> m b) -> m b
 ```
 
-We are supplying the first parameter (``IO Int``) in the application of ``>>=``, we just need the second one; of type ``Int -> IO Int``. The modulo function (``mod``) takes two numbers, ``(Num a) => a -> a -> a``. We can have ``return`` _following_ ``mod c`` to give us indeed a function from ``Int -> IO Int``. Therefore, in our code we have ``return . (mod max)``.
+We are supplying the first parameter (``IO Int``) in the application of ``>>=``, we just need the second one; of type ``Int -> IO Int``. The modulo function (``mod``) takes two numbers, ``(Num a) => a -> a -> a``. We can have ``return`` _following_ ``mod c`` to give us indeed a function from ``Int -> IO Int``. Therefore, in our code we have ``return . (`mod` max)``.
 
 --- 
 
