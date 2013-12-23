@@ -13,13 +13,13 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
   type Generate w = WriterT w (StateT Integer IO)
 
   personT :: IO a -> Generate [String] a
-  personT personM = do
+  personT person = do
     count <- get
     tell  ["P #" ++ show count]
     put   (count + 1)
-    liftIO personM
+    liftIO person
 
-  peopleT :: Generate [String] a -> Generate [String] [a]
+  peopleT :: (Monoid w) => Generate w a -> Generate w [a]
   peopleT = replicateM 10 
 
   runGenerate :: Generate w a -> IO ((a, w), Integer)
