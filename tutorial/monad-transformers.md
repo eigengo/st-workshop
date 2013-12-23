@@ -67,7 +67,7 @@ Suppose you now have a value ``Generate [String] [Person]`` assigned to some var
   runGenerate gen = runStateT (runWriterT gen) 0
 ```
 
-To see it all in action, evaluate
+Notice that we have not escaped the ``IO``, arising from using ``IO a`` to generate the individual values. In any case, to see it all in action, evaluate
 
 ```haskell
 > runGenerate (peopleT $ personT person)
