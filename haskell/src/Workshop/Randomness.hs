@@ -2,6 +2,7 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
 
   import Data.List
   import System.Random
+  import Control.Applicative 
   import Control.Monad
   import Control.Monad.Writer
   import Control.Monad.State
@@ -36,10 +37,10 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
         gen <- getStdGen
         len <- randomInt 10
         return $ take len (randomRs ('a', 'z') gen)
-      randomInt max = (randomIO :: IO Int) >>= return . (`mod` max)
+      randomInt max = (`mod` max) <$> (randomIO :: IO Int) 
 
   people :: IO [Person]
-  people = replicateM 20000 person 
+  people = replicateM 20 person 
 
   ages :: [Person] -> ([Person], [Person])
   ages = partition ((> 50) . age)
