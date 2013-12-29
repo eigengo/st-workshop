@@ -21,19 +21,19 @@ Fortunately, we can get our hands on the IO monad that the ``person`` function r
 Let's write a function that transforms the ``IO`` monad around ``IO Person``, and adds the "debug" messages and the running count of generated persons. First, I'll define a type that will name the _generating_ process, allowing us to specify the type of the messages (the type we will be writing), and the type of the "final" output value.
 
 ```haskell
-  type Generate w a = WriterT w (StateT Integer IO) a
+  type Generate w s a = WriterT w (StateT s IO) a
 ```
 
-Here, I say that the type ``Generate`` carries, in addition to the type ``a``, some writable field of type ``w``, and it keeps track of some ``Integer`` state. (This fits our goal where we want to keep track of some tracing messages, and we want to keep the running count in the generating process.) We can, of course eliminate the final ``a`` and get
+Here, I say that the type ``Generate`` carries, in addition to the type ``a``, some writable field of type ``w``, and it keeps track of some ``s`` state. (This fits our goal where we want to keep track of some tracing messages, and we want to keep the running count in the generating process.) We can, of course eliminate the final ``a`` and get
 
 ```haskell
-  type Generate w = WriterT w (StateT Integer IO)
+  type Generate w s = WriterT w (StateT s IO)
 ```
 
 Great. Now we can define a function that given ``IO a`` returns ``Generate [String] a``.
 
 ```haskell
-  personT :: IO a -> Generate [String] a
+  personT :: IO a -> Generate [String] Integer a
   personT person = do
     count <- get
     tell  ["P #" ++ show count]
@@ -44,7 +44,7 @@ Great. Now we can define a function that given ``IO a`` returns ``Generate [Stri
 The only complication is in the last line. We cannot return ``IO a``, we need to return some other ``m a`` that can be transformed into ``Generate [String] a``. To do so, we will _lift_ the value ``IO a`` by applying ``liftIO person``, giving us the final body of ``personT``.
 
 ```haskell
-  personT :: IO a -> Generate [String] a
+  personT :: IO a -> Generate [String] Integer a
   personT person = do
     count <- get
     tell  ["P #" ++ show count]
@@ -55,7 +55,7 @@ The only complication is in the last line. We cannot return ``IO a``, we need to
 Now, to generate (say) 1000 ``Person``s, but keeping track of the messages and count in each step, we can use the same ``replicateM`` we used in the plain monadic style earlier. Of course! We have not created any new structure, we are still dealing with monads. 
 
 ```haskell
-  peopleT :: (Monoid w) => Generate w a -> Generate w [a]
+  peopleT :: (Monoid w) => Generate w s a -> Generate w s [a]
   peopleT = replicateM 1000
 ```
 
@@ -63,8 +63,8 @@ Now, to generate (say) 1000 ``Person``s, but keeping track of the messages and c
 Suppose you now have a value ``Generate [String] [Person]`` assigned to some variable. (In GHCi, you can evaluate ``let gen = peopleT $ personT person``.) To actually see the result, you need to unwrap the values you have written into the state and writer. You can do that by applying the ``Generate w a`` value to ``runStateT (runWriterT gen) s0``, where ``gen`` is ``Generate w a`` and ``s0`` is some initial value for the state (``Integer`` in our case).
 
 ```haskell
-  runGenerate :: Generate w a -> IO ((a, w), Integer)
-  runGenerate gen = runStateT (runWriterT gen) 0
+  runGenerate :: (Num s) => Generate w s a -> IO ((a, w), s)
+  runGenerate gen = runStateT (runWriterT gen) (fromInteger 0)
 ```
 
 Notice that we have not escaped the ``IO``, arising from using ``IO a`` to generate the individual values. In any case, to see it all in action, evaluate

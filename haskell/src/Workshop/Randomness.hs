@@ -11,20 +11,20 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
                        , lastName :: String
                        , age :: Int } deriving (Show)
 
-  type Generate w = WriterT w (StateT Integer IO)
+  type Generate w s = WriterT w (StateT s IO)
 
-  personT :: IO a -> Generate [String] a
+  personT :: IO a -> Generate [String] Integer a
   personT person = do
     count <- get
     tell  ["P #" ++ show count]
     put   (count + 1)
     liftIO person
 
-  peopleT :: (Monoid w) => Generate w a -> Generate w [a]
+  peopleT :: (Monoid w) => Generate w s a -> Generate w s [a]
   peopleT = replicateM 10 
 
-  runGenerate :: Generate w a -> IO ((a, w), Integer)
-  runGenerate gen = runStateT (runWriterT gen) 0
+  runGenerate :: (Num s) => Generate w s a -> IO ((a, w), s)
+  runGenerate gen = runStateT (runWriterT gen) (fromInteger 0)
   
   person :: IO Person
   person = do
