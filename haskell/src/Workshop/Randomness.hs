@@ -40,7 +40,7 @@ module Workshop.Randomness(Person(..), people, ages, total, average) where
       randomInt max = (`mod` max) <$> (randomIO :: IO Int) 
 
   people :: IO [Person]
-  people = replicateM 20 person 
+  people = replicateM 200 person 
 
   ages :: [Person] -> ([Person], [Person])
   ages = partition ((> 50) . age)
