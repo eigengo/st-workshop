@@ -8,9 +8,11 @@ object Offline {
 
   lazy val products: List[Product] = {
     val is = Source.fromInputStream(Offline.getClass.getResourceAsStream("/booze.txt"))
-    // Use is.getLines() to get Iterator[String] representing each line
-    // Convert each line to a Product
-    // And turn the result to List[Product]
+    // Use ``is.getLines()`` to get ``Iterator[String]`` representing each line.
+    // Convert each line to a ``Product`` (the format is ``name '|' price '|' category``), where
+    // ``name`` and ``category`` are ``String``s, and ``price`` is ``BigDecimal``.
+    // Consume all lines by converting the result to ``List[Product]``.
+    //
     // N.B. some lines are malformed and do not contain three elements (oopsie! :))
     ???
   }
