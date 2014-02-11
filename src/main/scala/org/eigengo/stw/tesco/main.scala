@@ -12,7 +12,7 @@ object Main extends App {
   val api = system.actorOf(Props(new TescoApiActor(uri, credentials) with Authentication {
     override def login(uri: Uri, credentials: Credentials): Future[Either[String, SessionId]] = {
       import system.dispatcher
-      Future(Right("xNuTffUFJMTGz2opANSrw8SuPGKfxyT9ORp1fPMFQ5ieucwlhJ"))
+      Future(Right("ZIcFseDfY15SP6cp69ozS7g1GlyCbfuFLBDZhOXBEVzUvmqmsK"))
     }
   }))
 

@@ -48,7 +48,8 @@ class TescoApiActor(uri: Uri, credentials: Credentials) extends Actor with Defau
 
   def loggedIn(sessionId: String): Receive = {
     def command(command: String, queryParameters: (String, String)*) = {
-      val x = uri.withQuery(("command", command), ("sessionId", sessionId)).withQuery(queryParameters:_*)
+      val params = Map("command" -> command, "sessionkey" -> sessionId) ++ queryParameters
+      val x = uri.withQuery(params)
       println(x)
       Get(x)
     }
