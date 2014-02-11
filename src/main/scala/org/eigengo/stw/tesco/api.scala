@@ -94,7 +94,15 @@ object TescoApiActor {
 
 }
 
+/**
+ * Contains directives that manipulate the content types
+ */
 trait ContentTypeDirectives {
+  /**
+   * Coerces the ``Content-Type`` of the ``response`` to be ``application/json``, regardless of the actual value
+   * @param response the response to coerce
+   * @return the response with the same body, but with the content-type set to ``application/json``
+   */
   def forceApplicationJson(response: HttpResponse): HttpResponse = response.mapEntity(entity => HttpEntity(ContentTypes.`application/json`, entity.data))
 }
 
@@ -118,10 +126,14 @@ class TescoApiActor(uri: Uri, credentials: Credentials) extends Actor with Defau
   // low-level IO
   val productSearch = sendReceive ~> forceApplicationJson ~> unmarshal[ProductSearchResponse]
 
-  // login
+  // login when constructing the actor instance
   doLogin()
 
-  def doLogin() = login(uri, credentials).map {
+  /**
+   * Performs the login operation
+   * @return the future of the result
+   */
+  private def doLogin() = login(uri, credentials).map {
     case Left(error) => context.become(receive); NotLoggedIn
     case Right(sessionId) => context.become(loggedIn(sessionId)); LoggedIn(sessionId)
   }
@@ -132,9 +144,10 @@ class TescoApiActor(uri: Uri, credentials: Credentials) extends Actor with Defau
    * @param sessionId the session id
    * @return the actor behaviour
    */
-  def loggedIn(sessionId: String): Receive = {
+  private def loggedIn(sessionId: String): Receive = {
     def command(command: String, page: Option[Int], queryParameters: (String, String)*) = {
-      val params = Map("command" -> command, "sessionkey" -> sessionId) ++ queryParameters ++ page.map(p => Map("page" -> p.toString)).getOrElse(Map())
+      val params = Map("command" -> command, "sessionkey" -> sessionId) ++ queryParameters ++
+                     page.map(p => Map("page" -> p.toString)).getOrElse(Map())
       Get(uri.withQuery(params))
     }
 

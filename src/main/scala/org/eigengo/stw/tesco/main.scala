@@ -3,6 +3,7 @@ package org.eigengo.stw.tesco
 import akka.actor.{Props, ActorSystem}
 import spray.http.Uri
 import scala.io.Source
+import scala.annotation.tailrec
 
 object Main extends App {
   import akka.actor.ActorDSL._
@@ -16,6 +17,13 @@ object Main extends App {
   })
   val uri = Uri("http://www.techfortesco.com/groceryapi_b1/restservice.aspx")
   val credentials = {
+    // the ~/.tescoapi file should contain four lines:
+    //
+    // email address
+    // password
+    // developer key
+    // application key
+    //
     val lines = Source.fromFile(System.getProperty("user.home") + "/.tescoapi").getLines().toList
     Credentials(lines(0), lines(1), lines(2), lines(3))
   }
@@ -24,6 +32,10 @@ object Main extends App {
   val SearchCommand     = "find (\\d+)? (.*)".r
   val ListOffersCommand = "offers (\\d+)?".r
 
+  /**
+   * Main command loop
+   */
+  @tailrec
   def commandLoop(): Unit = {
     Console.readLine() match {
       case "exit" => return
