@@ -5,4 +5,5 @@ case class ProductSearchResponse(StatusCode: Int, Products: List[Product])
 
 object commands {
   val ProductSearch = "PRODUCTSEARCH"
+  val ListProductOffers = "LISTPRODUCTOFFERS"
 }
