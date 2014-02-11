@@ -6,6 +6,8 @@ import spray.httpx.SprayJsonSupport
 
 object Offline {
 
+  lazy val byCategory: Map[String, List[Product]] = ???
+
   lazy val products: List[Product] = {
     val is = Source.fromInputStream(Offline.getClass.getResourceAsStream("/booze.txt"))
     // Use is.getLines() to get Iterator[String] representing each line
@@ -19,9 +21,11 @@ object Offline {
     products.toList
   }
 
-  def search(query: String): List[Product] = products.filter(_.Name contains query)
+  def search(query: String): List[Product] = ???
 
-  def main(a: Array[String]): Unit = println(search("beer"))
+  def mostExpensive(query: String): Product = ???
+
+  def cheapest(query: String): Product = ???
 
 }
 
@@ -40,6 +44,7 @@ object OfflineConversions extends App with DefaultJsonProtocol with SprayJsonSup
       case Right(psr) =>
         val newContent = (psr.Products map convertProduct).mkString("\n")
         println(newContent)
+      case Left(_) =>
     }
 
   }
