@@ -12,11 +12,7 @@ object Offline {
     // Convert each line to a Product
     // And turn the result to List[Product]
     // N.B. some lines are malformed and do not contain three elements (oopsie! :))
-
-    val products = is.getLines().map(_.split('|')).filter(_.length == 3).map { elements =>
-      Product(elements(0), BigDecimal(elements(1)), elements(2))
-    }
-    products.toList
+    ???
   }
 
   def search(query: String): List[Product] = ???

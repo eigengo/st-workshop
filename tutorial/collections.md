@@ -101,3 +101,29 @@ And then ask Scala to evaluate the first 10:
 ```scala
 fibs.take(10).toList
 ```
+
+---
+
+Onwards to Tesco. Before we start looking into using its API for real, let's deal with some offline work.
+
+```scala
+object Offline {
+
+  lazy val byCategory: Map[String, List[Product]] = ???
+
+  lazy val products: List[Product] = {
+    val is = Source.fromInputStream(Offline.getClass.getResourceAsStream("/booze.txt"))
+    val products = is.getLines().map(_.split('|')).filter(_.length == 3).map { elements =>
+      Product(elements(0), BigDecimal(elements(1)), elements(2))
+    }
+    products.toList
+  }
+
+  def search(query: String): List[Product] = ???
+
+  def mostExpensive(query: String): Product = ???
+
+  def cheapest(query: String): Product = ???
+
+}
+```
